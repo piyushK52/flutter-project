@@ -1,6 +1,10 @@
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
 
-class Product with ChangeNotifier{
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class Product with ChangeNotifier {
   final String id;
   final String title;
   final String description;
@@ -17,8 +21,17 @@ class Product with ChangeNotifier{
     @required this.price,
   });
 
-  void toggleFavoriteStatus() {
-    isFavorite = !isFavorite;
-    notifyListeners();
+  Future<void> toggleFavoriteStatus() async {
+    final url = 'https://flutter-update-ff151.firebaseio.com/products/$id.json';
+    try {
+      await http.patch(
+        url,
+        body: json.encode({
+          'isFavorite': !isFavorite,
+        }),
+      );
+      isFavorite = !isFavorite;
+      notifyListeners();
+    } catch (error) {}
   }
 }

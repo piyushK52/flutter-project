@@ -75,6 +75,9 @@ class Products with ChangeNotifier {
     try{
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String,dynamic>;
+      if(extractedData == null) {
+        return;
+      }
       final List<Product> loaderProducts = [];
       extractedData.forEach((prodId,prodData) {
         loaderProducts.add(Product(
@@ -140,7 +143,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = 'https://flutter-update-ff151.firebaseio.com/products/$id';
+    final url = 'https://flutter-update-ff151.firebaseio.com/products/$id.json';
     await http.delete(url).then((response){
       if(response.statusCode >= 400) {
         throw HttpException('Could not delete product');
