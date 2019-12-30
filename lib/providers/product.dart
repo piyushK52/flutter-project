@@ -21,8 +21,8 @@ class Product with ChangeNotifier {
     @required this.price,
   });
 
-  Future<void> toggleFavoriteStatus() async {
-    final url = 'https://flutter-update-ff151.firebaseio.com/products/$id.json';
+  Future<void> toggleFavoriteStatus(String token) async {
+    final url = 'https://flutter-update-ff151.firebaseio.com/products/$id.json?auth=$token';
     try {
       await http.patch(
         url,
