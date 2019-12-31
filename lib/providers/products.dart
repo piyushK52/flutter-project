@@ -43,8 +43,9 @@ class Products with ChangeNotifier {
 
   // var _showFavoritesOnly = false;
   final String authToken;
+  final String userId;
 
-  Products(this.authToken, this._items);
+  Products(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     // print("=========");
@@ -73,8 +74,9 @@ class Products with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
-    final url = 'https://flutter-update-ff151.firebaseio.com/products.json?auth=$authToken';
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    final url = 'https://flutter-update-ff151.firebaseio.com/products.json?auth=$authToken&$filterString';
     try{
       final response = await http.get(url);
       print('http get response found out');
@@ -84,6 +86,9 @@ class Products with ChangeNotifier {
         print('returning because of error');
         return;
       }
+      final favUrl = 'https://flutter-update-ff151.firebaseio.com/userFavorite/$userId.json?auth=$authToken';
+      final favoriteResponse =  await http.get(favUrl);
+      final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loaderProducts = [];
       print('starting the foreach loop');
       extractedData.forEach((prodId,prodData) {
@@ -92,7 +97,7 @@ class Products with ChangeNotifier {
           title: prodData['title'],
           description: prodData['description'],
           price: prodData['price'],
-          isFavorite: prodData['isFavorite'],
+          isFavorite: favoriteData == null ? false : favoriteData[prodId] ?? false,
           imageUrl: prodData['imageUrl']
         ));
       });
@@ -116,6 +121,7 @@ class Products with ChangeNotifier {
           'imageUrl': product.imageUrl,
           'description': product.description,
           'isFavorite': product.isFavorite,
+          'creatorId': userId,
         }),
       );
       final newProduct = Product(
