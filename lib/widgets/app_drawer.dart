@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../screens/orders_screen.dart';
 import '../providers/auth.dart';
+import '../helpers/custom_route.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -17,38 +18,40 @@ class AppDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.shop),
-            title: Text('Shop'),
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed('/');
-            }
-          ),
+              leading: Icon(Icons.shop),
+              title: Text('Shop'),
+              onTap: () {
+                Navigator.of(context).pushReplacementNamed('/');
+              }),
           Divider(),
           ListTile(
-            leading: Icon(Icons.shop),
-            title: Text('Orders'),
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
-            }
-          ),
+              leading: Icon(Icons.shop),
+              title: Text('Orders'),
+              onTap: () {
+                // Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
+                Navigator.of(context).pushReplacement(
+                  CustomRoute(
+                    builder: (ctx) => OrdersScreen(),
+                  ),
+                );
+              }),
           Divider(),
           ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Manage Products'),
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
-            }
-          ),
+              leading: Icon(Icons.edit),
+              title: Text('Manage Products'),
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(UserProductsScreen.routeName);
+              }),
           Divider(),
           ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-            onTap: () {
-              // Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
-              Navigator.of(context).pop();
-              Provider.of<Auth>(context, listen: false).logout();
-            }
-          )
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Logout'),
+              onTap: () {
+                // Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
+                Navigator.of(context).pop();
+                Provider.of<Auth>(context, listen: false).logout();
+              })
         ],
       ),
     );
