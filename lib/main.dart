@@ -44,9 +44,9 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, child) => MaterialApp(
-          title: 'MyShop',
+          title: 'Heroes',
           theme: ThemeData(
-            primarySwatch: Colors.purple,
+            primarySwatch: Colors.deepPurple,
             accentColor: Colors.deepOrange,
             fontFamily: 'Lato',
           ),
@@ -81,10 +81,10 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyShop'),
+        title: Text('Heroes'),
       ),
       body: Center(
-        child: Text('Let\'s build a shop!'),
+        child: Text('Hero Catalogue!'),
       ),
     );
   }

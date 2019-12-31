@@ -49,7 +49,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     // final productsContainer = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyShop'),
+        title: Text('Heroes'),
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
